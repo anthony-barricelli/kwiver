@@ -13,6 +13,9 @@ Vital
    initialization.
  * Added a new abstract algorithm, uv_unwrap_mesh, which unwraps a mesh and generates normalized texture coordinates.
 
+ * Added iterator, const_iterator and iterable classes to support container-
+   independent iteration.
+
 Vital Bindings
 
 Arrows: Core
