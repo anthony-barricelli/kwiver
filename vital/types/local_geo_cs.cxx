@@ -38,6 +38,9 @@
 #include <fstream>
 #include <iomanip>
 
+#include <GeographicLib/Geocentric.hpp>
+#include <GeographicLib/LocalCartesian.hpp>
+
 #include <vital/math_constants.h>
 
 #include <vital/types/geodesy.h>
@@ -356,6 +359,46 @@ update_metadata_from_cameras(std::map<frame_id_t, camera_sptr> const& cam_map,
   }
 }
 
+void llh_to_enu(float& lat, float& lon, float& h,
+                float lat0, float lon0, float h0,
+                bool in_degrees=true){
+  if(!in_degrees){
+    lat = lat*180/pi;
+    lon = lon*180/pi;
+    lat0 = lat0*180/pi;
+    lon0 = lon0*180/pi;
+  }
+  GeographicLib::Geocentric earth(GeographicLib::Constants::WGS84_a(), GeographicLib::Constants::WGS84_f());
+  GeographicLib::LocalCartesian lc(lat0, lon0, h0, earth);
+  double east, north, up;
+  lc.Forward(lat,lon,h, east, north, up);
+  lat = east;
+  lon = north;
+  h = up;
+}
+
+void enu_to_llh(float& east, float& north, float& up,
+                float lat0, float lon0, float h0,
+                bool in_degrees=true){
+  if(!in_degrees){
+    lat0 = lat0*180/pi;
+    lon0 = lon0*180/pi;
+  }
+  
+  GeographicLib::Geocentric earth(GeographicLib::Constants::WGS84_a(), GeographicLib::Constants::WGS84_f());
+  GeographicLib::LocalCartesian lc(lat0, lon0, h0, earth);
+  
+  double lat, lon, h;
+  lc.Reverse(east, north, up, lat, lon, h);
+  east = lat;
+  north = lon;
+  up = h;
+
+  if(!in_degrees){
+    east = east*180/pi;
+    north = north*180/pi;
+  }
+}
 
 } // end namespace vital
 } // end namespace kwiver
