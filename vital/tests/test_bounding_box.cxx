@@ -99,3 +99,39 @@ TEST(bounding_box, intersection_bbox_d)
   EXPECT_EQ( 200, bbi.lower_right().x() );
   EXPECT_EQ( 223, bbi.lower_right().y() );
 }
+/*
+// ----------------------------------------------------------------------------
+TEST(bounding_box, no_intersection_bbox_d)
+{
+  kwiver::vital::bounding_box_d::vector_type tl{ 10, 10 };
+  kwiver::vital::bounding_box_d::vector_type br{ 11, 11 };
+  //kwiver::vital::bounding_box_d::vector_type t{ 999, 999 };
+  kwiver::vital::bounding_box_d bb1{ tl, br };
+
+  kwiver::vital::bounding_box_d::vector_type tl2{ 0, 0 };
+  kwiver::vital::bounding_box_d::vector_type br2{ 1, 1 };
+  kwiver::vital::bounding_box_d bb2 = {tl2,br2};
+  //kwiver::vital::translate( bb2, t );
+  kwiver::vital::bounding_box_d bbi = kwiver::vital::intersection( bb1, bb2 );
+
+  EXPECT_EQ( 0, bbi.upper_left().x() );
+  EXPECT_EQ( 0, bbi.upper_left().y() );
+  EXPECT_EQ( 0, bbi.lower_right().x() );
+  EXPECT_EQ( 0, bbi.lower_right().y() );
+  EXPECT_EQ( 0, bbi.area() );
+}
+*/
+// ----------------------------------------------------------------------------
+TEST(bounding_box, dims_bbox_d)
+{
+  kwiver::vital::bounding_box_i::vector_type tl{ 0, 0 };
+  kwiver::vital::bounding_box_i::vector_type  br{ 2, 2 };
+  kwiver::vital::bounding_box_i::vector_type  c{ 1, 1 };
+  kwiver::vital::bounding_box_i bb{ tl, br };
+
+  EXPECT_EQ( c, bb.center() );
+  EXPECT_EQ( 2, bb.height() );
+  EXPECT_EQ( 2, bb.width() );
+}
+
+
